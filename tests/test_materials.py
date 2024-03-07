@@ -1,6 +1,7 @@
 import pytest
 import numpy as np
 from src.utils import load_material
+from scipy.constants import c
 
 def test_load_material_success():
     """Test loading a material data successfully."""
@@ -34,7 +35,6 @@ def test_material_data_conversion_and_interpolation():
     expected_k = 1.536
 
     # Convert the expected wavelength to frequency for comparison
-    c = 3e8  # Speed of light in m/s
     expected_frequency_hz = c / (expected_wavelength_um * 1e-6)
 
     # Find the row in the data where the frequency matches the expected frequency

@@ -1,7 +1,10 @@
 import csv
 import json
+import os
+from pathlib import Path
 import numpy as np
 from scipy.interpolate import interp1d
+from scipy.constants import c
 
 def load_material(material_name):
     """
@@ -13,22 +16,29 @@ def load_material(material_name):
     Returns:
     - A NumPy array with columns for frequency (converted from wavelength), n, and k.
     """
+    # Determine the directory of the current script
+    current_dir = Path(__file__).parent
+
+    # Build the absolute path to materials.json
+    materials_file = current_dir / "materials.json"
+
     # Load the material index JSON to find the CSV file path
-    with open('src/materials.json', 'r') as file:
+    with open(materials_file, 'r') as file:
         material_index = json.load(file)
     
     # Get the file path for the requested material
-    file_path = material_index.get(material_name)
-    if not file_path:
+    relative_file_path = material_index.get(material_name)
+    if not relative_file_path:
         raise ValueError(f"Material {material_name} not found in the index.")
     
-    # Speed of light in vacuum (m/s)
-    c = 3e8
+    # Construct the absolute path to the material CSV file
+    csv_file_path = current_dir / relative_file_path
+
     # Initialize a list to hold the converted data
     data = []
     
     # Open and read the CSV file
-    with open(f'src/{file_path}', 'r') as csvfile:
+    with open(csv_file_path, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader)  # Skip the header row
         for row in csvreader:
@@ -38,7 +48,11 @@ def load_material(material_name):
             data.append((frequency, n, k))
     
     # Convert to a NumPy array for easier handling in calculations
-    return np.array(data)
+    data = np.array(data)
+    # Ensure the data is sorted by frequency in ascending order
+    data = data[data[:, 0].argsort()]
+    
+    return data
 
 def interpolate_material(material_data, frequencies):
     """
@@ -54,9 +68,20 @@ def interpolate_material(material_data, frequencies):
     # Extract frequency, n, and k columns
     freqs, n_values, k_values = material_data.T
     
-    # Create interpolation functions
-    n_interp = interp1d(freqs, n_values, kind='cubic', fill_value="extrapolate")
-    k_interp = interp1d(freqs, k_values, kind='cubic', fill_value="extrapolate")
+    # Remove duplicates (if any) while preserving order
+    unique_freqs, indices = np.unique(freqs, return_index=True)
+    unique_n_values = n_values[indices]
+    unique_k_values = k_values[indices]
+    
+    # Ensure frequencies are sorted (usually they should be, but just in case)
+    sorted_indices = np.argsort(unique_freqs)
+    sorted_freqs = unique_freqs[sorted_indices]
+    sorted_n_values = unique_n_values[sorted_indices]
+    sorted_k_values = unique_k_values[sorted_indices]
+    
+    # Create interpolation functions for the sorted, unique data
+    n_interp = interp1d(sorted_freqs, sorted_n_values, kind='cubic', fill_value="extrapolate")
+    k_interp = interp1d(sorted_freqs, sorted_k_values, kind='cubic', fill_value="extrapolate")
     
     # Interpolate n and k for the given frequencies
     n_interp_values = n_interp(frequencies)

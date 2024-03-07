@@ -1,26 +1,45 @@
+import unittest
 import numpy as np
-from src.layerlumos import stackrt  # Adjust the import statement based on your project structure
+from scipy.constants import c
+# Assume utils and layerlumos are modules you've created or installed that contain the necessary functions
+from src.utils import load_material, interpolate_material
+from src.layerlumos import stackrt0
 
-def test_air_glass_air_stack():
-    # Define the test case for an air-glass-air stack
-    n = np.array([1, 1.4, 1])  # Refractive indices for air, glass, air
-    d = np.array([0, 1e-6, 0])  # Thickness in meters, with glass layer being 1 micron thick
-    f = np.array([3e8 / 500e-9])  # Frequency for 500 nm wavelength
-    theta = 0  # Normal incidence
+class TestLayerLumos(unittest.TestCase):
+    def test_stackrt0(self):
+        # Load material data for SiO2 (example uses 'Ag', replace with 'SiO2' or appropriate material)
+        si02_data = load_material('Ag')
 
-    # Expected results
-    # For simplicity, these are approximate values. In practice, you might calculate these
-    # using known formulas for normal incidence or reference data.
-    expected_R_TE = np.array([0.04])  # ~4% reflection for air-glass interface at normal incidence
-    expected_T_TE = np.array([0.96])  # ~96% transmission for air-glass interface at normal incidence
-    expected_R_TM = np.array([0.04])  # TM and TE are the same for normal incidence
-    expected_T_TM = np.array([0.96])
+        # Define a small wavelength range for testing
+        wavelengths = np.linspace(300e-9, 900e-9, 3)  # from 300nm to 700nm
+        frequencies = c / wavelengths  # Convert wavelengths to frequencies
 
-    # Execute the function under test
-    R_TE, T_TE, R_TM, T_TM = stackrt(n, d, f, theta)
+        # Interpolate n and k values for SiO2 over the specified frequency range
+        n_k_si02 = interpolate_material(si02_data, frequencies)
+        n_si02 = n_k_si02[:, 0] + 1j * n_k_si02[:, 1]
 
-    # Assertions to compare the actual vs. expected results
-    np.testing.assert_almost_equal(R_TE, expected_R_TE, decimal=5)
-    np.testing.assert_almost_equal(T_TE, expected_T_TE, decimal=5)
-    np.testing.assert_almost_equal(R_TM, expected_R_TM, decimal=5)
-    np.testing.assert_almost_equal(T_TM, expected_T_TM, decimal=5)
+        # Stack configuration
+        n_air = np.ones_like(wavelengths)
+        d_air = np.array([0])
+        d_si02 = np.array([2e-6])
+
+        n_stack = np.vstack([n_air, n_si02, n_air]).T
+        d_stack = np.vstack([d_air, d_si02, d_air])
+
+        # Calculate R and T over the frequency range
+        R_TE, T_TE, R_TM, T_TM = stackrt0(n_stack, d_stack, frequencies)
+
+        # Calculate average R and T
+        R_avg = (R_TE + R_TM) / 2
+        T_avg = (T_TE + T_TM) / 2
+
+        # Expected output (based on your script; might need adjustment based on actual results)
+        expected_R_avg = np.array([0.15756072, 0.98613162, 0.99031732])
+        expected_T_avg = np.array([5.87146690e-34, 1.58748575e-71, 5.13012036e-76])
+
+        # Validate the results with a tolerance for floating-point arithmetic
+        np.testing.assert_allclose(R_avg, expected_R_avg, rtol=1e-2, atol=0)
+        np.testing.assert_allclose(T_avg, expected_T_avg, rtol=1e-2, atol=0)
+
+if __name__ == '__main__':
+    unittest.main()
