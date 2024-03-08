@@ -10,7 +10,9 @@ import numpy as np
 '''
 
 setup_code2 = '''
-
+import sys, os
+sys.path.append("C:\\Program Files\\Lumerical\\v241\\api\\python\")
+import lumapi
 import numpy as np
 '''
 
@@ -41,9 +43,7 @@ R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 '''
 
 code_snippet2 = '''
-import sys, os
-sys.path.append("C:\\Program Files\\Lumerical\\v241\\api\\python\")
-import lumapi
+
 fdtd = lumapi.FDTD(hide=True)
 wavelengths = np.linspace(300e-9, 900e-9, 50)  # 100 points from 300nm to 700nm
 frequencies = c / wavelengths  # Convert wavelengths to frequencies
