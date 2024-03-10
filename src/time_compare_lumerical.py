@@ -64,8 +64,8 @@ RT = fdtd.stackrt(n_matrix, layer_thicknesses, frequencies, theta)
 '''
 
 # Run timeit
-time1 = timeit.timeit(stmt=code_snippet1, setup=setup_code1, number=1)
-time2 = timeit.timeit(stmt=code_snippet2, setup=setup_code2, number=1)
+time1 = timeit.timeit(stmt=code_snippet1, setup=setup_code1, number=10)
+time2 = timeit.timeit(stmt=code_snippet2, setup=setup_code2, number=10)
 
 print(f"Code snippet 1 execution time: {time1}")
 print(f"Code snippet 2 execution time: {time2}")
