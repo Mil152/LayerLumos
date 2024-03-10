@@ -1,3 +1,9 @@
+---
+layout: page
+title: "Home"
+permalink: /
+---
+
 # Welcome to LayerLumos Documentation
 
 ![LayerLumos Icon](/docs/assets/icon3.jpg)
