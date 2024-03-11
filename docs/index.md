@@ -6,8 +6,6 @@ permalink: /
 
 # Welcome to LayerLumos Documentation
 
-![LayerLumos Icon](/docs/assets/icon3.jpg)
-
 ## Introduction
 
 **LayerLumos** is an innovative open-source tool designed to revolutionize optical simulations. It enables precise calculations of light reflection and transmission through multi-layer structures for both academic and commercial users. Tailored for the optics and photonics community, LayerLumos combines efficiency, flexibility, and ease of use in a powerful simulation package.
