@@ -15,7 +15,7 @@ frequencies = np.linspace(8e9, 18e9, 100)  # Convert wavelengths to frequencies
 n_k_si02 = load_material_RF('Ag', frequencies)
 n_si02 = n_k_si02[:, 1] + 1j*n_k_si02[:, 2]  # Combine n and k into a complex refractive index
 
-print(n_si02)
+# print(n_si02)
 
 # Define stack configuration
 n_air = np.ones_like(frequencies)  # Refractive index of air is approximately 1
@@ -34,4 +34,4 @@ SE_TE = -10 * np.log10(T_TE)
 SE_TM = -10 * np.log10(T_TM)
 SE = (SE_TE + SE_TM) / 2
 
-# print(SE)
+print(np.mean(SE))
