@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.constants import c
-from utils import load_material, interpolate_material
+from .utils import load_material, interpolate_material
 import numpy as np
 
 def stackrt(n, d, f, theta=np.array([0])):

@@ -6,6 +6,71 @@ import numpy as np
 from scipy.interpolate import interp1d
 from scipy.constants import c
 
+Metals_sigma = {
+    'Cu': 5.96e7,
+    'Cr': 7.74e6,
+    'Ag': 6.3e7,
+    'Al': 3.77e7,
+    'Ni' : 1.43e7,
+    'W' : 1.79e7,
+    'Ti' : 2.38e6,
+    'Pd' : 9.52e6
+}
+Metals_nk_updated_specific_sigma = {}
+mu0 = 4 * np.pi * 1e-7  # H/m
+Z_0 = 377  # Ohms, impedance of free space
+# Frequency range
+nu = np.linspace(8e9, 18e9, 11)  # From 8 GHz to 18 GHz
+omega = 2 * np.pi * nu  # Angular frequency
+for metal, sigma in Metals_sigma.items():
+    Z = np.sqrt(1j * omega * mu0 / sigma)  # Impedance of the material using specific sigma
+    n_complex = Z_0 / Z  # Complex refractive index
+
+    # Extract real and imaginary parts of the refractive index
+    n_real = np.real(n_complex)
+    k_imag = np.imag(n_complex)
+    
+    # Update the dictionary with the new values
+    Metals_nk_updated_specific_sigma[metal] = {
+        'freq_data': nu.tolist(),
+        'n_data': n_real.tolist(),
+        'k_data': k_imag.tolist()
+    }
+def load_material_RF(material_name, frequencies):
+    """
+    Load material RF data for a given material and frequencies.
+    
+    Parameters:
+    - material_name: The name of the material to load.
+    - frequencies: Array of frequencies for which data is requested.
+    
+    Returns:
+    - A NumPy array with columns for frequency, n, and k.
+    """
+    # Check if the material is defined
+    if material_name not in Metals_nk_updated_specific_sigma:
+        # Material not found, return default values (n=1, k=0) for given frequencies
+        n_default = np.ones_like(frequencies)
+        k_default = np.zeros_like(frequencies)
+        data = np.column_stack((frequencies, n_default, k_default))
+    else:
+        # Material found, extract the data
+        material_data = Metals_nk_updated_specific_sigma[material_name]
+        freq_data = np.array(material_data['freq_data'])
+        n_data = np.array(material_data['n_data'])
+        k_data = np.array(material_data['k_data'])
+        
+        # Interpolate n and k data for the input frequencies, if necessary
+        n_interpolated = np.interp(frequencies, freq_data, n_data)
+        k_interpolated = np.interp(frequencies, freq_data, k_data)
+        
+        # Combine the data
+        data = np.column_stack((frequencies, n_interpolated, k_interpolated))
+    
+    return data
+
+
+
 def load_material(material_name):
     """
     Load material data from its CSV file, converting wavelength to frequency.
@@ -42,10 +107,15 @@ def load_material(material_name):
         csvreader = csv.reader(csvfile)
         next(csvreader)  # Skip the header row
         for row in csvreader:
-            wavelength_um, n, k = map(float, row)
-            # Convert wavelength in um to frequency in Hz
-            frequency = c / (wavelength_um * 1e-6)
-            data.append((frequency, n, k))
+            try:
+                # Attempt to convert wavelength, n, and k to floats
+                wavelength_um, n, k = map(float, row)
+                # Convert wavelength in um to frequency in Hz
+                frequency = c / (wavelength_um * 1e-6)
+                data.append((frequency, n, k))
+            except ValueError:
+                # If conversion fails, skip this row
+                continue
     
     # Convert to a NumPy array for easier handling in calculations
     data = np.array(data)
