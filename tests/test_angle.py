@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 from scipy.constants import c
-from src.utils import load_material, interpolate_material
-from src.layerlumos import stackrt
+from layerlumos.utils import load_material, interpolate_material
+from layerlumos.layerlumos import stackrt
 
 class TestLayerLumosStackrt(unittest.TestCase):
     def test_stackrt_with_angles(self):

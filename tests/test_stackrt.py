@@ -2,8 +2,8 @@ import unittest
 import numpy as np
 from scipy.constants import c
 # Assume utils and layerlumos are modules you've created or installed that contain the necessary functions
-from src.utils import load_material, interpolate_material
-from src.layerlumos import stackrt0
+from layerlumos.utils import load_material, interpolate_material
+from layerlumos.layerlumos import stackrt0
 
 class TestLayerLumos(unittest.TestCase):
     def test_stackrt0(self):

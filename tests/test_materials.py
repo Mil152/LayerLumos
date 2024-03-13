@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from src.utils import load_material
+from layerlumos.utils import load_material
 from scipy.constants import c
 
 def test_load_material_success():

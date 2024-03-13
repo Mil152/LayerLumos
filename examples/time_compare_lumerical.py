@@ -4,7 +4,7 @@ import timeit
 setup_code1 = '''
 import numpy as np
 from scipy.constants import c
-from utils import load_material, interpolate_material
+from layerlumos.utils import load_material, interpolate_material
 from layerlumos import stackrt, stackrt0
 import numpy as np
 '''

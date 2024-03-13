@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.constants import c
-from utils import load_material, interpolate_material
+from layerlumos.utils import load_material, interpolate_material
 from layerlumos import stackrt, stackrt0
 import matplotlib.pyplot as plt
 import numpy as np
