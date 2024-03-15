@@ -25,6 +25,7 @@ To get started with LayerLumos, follow these simple steps:
 1. **Installation Guide**: Check out our step-by-step instructions for setting up LayerLumos on your system.
 2. **Quick Start Tutorial**: Dive into your first light interaction simulation with our beginner-friendly guide.
 3. **Explore Examples**: Learn from a curated selection of examples that demonstrate the versatility and capabilities of LayerLumos.
+For more detailed information on our API, see our [API documentation](API_Documentation.md).
 
 ## Contribute
 
@@ -41,3 +42,4 @@ Encountered an issue or have a question? Our community is here to help. Please f
 ## Acknowledgments
 
 A special thank you to all contributors, users, and supporters of LayerLumos. Your engagement and feedback drive the continuous improvement and success of this project.
+
