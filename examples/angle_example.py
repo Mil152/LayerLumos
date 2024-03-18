@@ -5,10 +5,10 @@ from layerlumos.layerlumos import stackrt, stackrt0
 import matplotlib.pyplot as plt
 import numpy as np
 
-si02_data = load_material('Ag')
+si02_data = load_material('TiO2')
 
 # Define wavelength range (in meters)
-wavelengths = np.linspace(300e-9, 900e-9, 50)  # 100 points from 300nm to 700nm
+wavelengths = np.linspace(300e-9, 900e-9, 5)  # 100 points from 300nm to 700nm
 frequencies = c / wavelengths  # Convert wavelengths to frequencies
 
 # Interpolate n and k values for SiO2 over the specified frequency range
