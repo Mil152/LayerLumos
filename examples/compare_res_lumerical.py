@@ -7,7 +7,7 @@ from scipy.constants import c
 import matplotlib.pyplot as plt
 
 fdtd = lumapi.FDTD(hide=True)
-wavelengths = np.linspace(300e-9, 900e-9, 5)  # 100 points from 300nm to 700nm
+wavelengths = np.linspace(300e-9, 900e-9, 50)  # 100 points from 300nm to 700nm
 frequencies = c / wavelengths  # Convert wavelengths to frequencies
 
 layer_materials = ['Air', 'TiO2 (Titanium Dioxide) - Siefke', 'Air']
