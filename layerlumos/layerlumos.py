@@ -8,21 +8,25 @@ def stackrt(n, d, f, theta=np.array([0])):
     Calculates the reflection and transmission coefficients for a multilayer stack
     at different frequencies and incidence angles.
 
-    Parameters:
-    - n (numpy.ndarray): The refractive indices of the layers for each frequency.
-                         Shape should be (Nfreq, Nlayers), where Nfreq is the number of
-                         frequencies and Nlayers is the number of layers.
-    - d (numpy.ndarray): The thicknesses of the layers. Shape should be (Nlayers,).
-    - f (numpy.ndarray): The frequencies at which to calculate the coefficients.
-                         Shape should be (Nfreq,).
-    - theta (float or numpy.ndarray): The incidence angle(s) in degrees. Can be a single value or an array of angles.
+    :param n: The refractive indices of the layers for each frequency.
+              Shape should be (Nfreq, Nlayers), where Nfreq is the number of
+              frequencies and Nlayers is the number of layers.
+    :type n: numpy.ndarray
+    :param d: The thicknesses of the layers. Shape should be (Nlayers,).
+    :type d: numpy.ndarray
+    :param f: The frequencies at which to calculate the coefficients.
+              Shape should be (Nfreq,).
+    :type f: numpy.ndarray
+    :param theta: The incidence angle(s) in degrees. Can be a single value or an array of angles. Default is an array containing 0.
+    :type theta: float or numpy.ndarray
 
-    Returns:
-    - R_TE (numpy.ndarray): Reflectance for TE polarization. Shape is (Nfreq,).
-    - T_TE (numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
-    - R_TM (numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
-    - T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
+    :returns: A tuple containing:
+              - R_TE (numpy.ndarray): Reflectance for TE polarization. Shape is (Nfreq,).
+              - T_TE (numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
+              - R_TM (numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
+              - T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
     """
+
     c = 3e8  # Speed of light in vacuum
     wvl = c / f  # Convert frequency to wavelength
     theta_radians = np.radians(theta)  # Convert incidence angle to radians
@@ -87,20 +91,23 @@ def stackrt0(n, d, f):
     Calculates the reflection and transmission coefficients for a multilayer stack
     at different frequencies under normal incidence.
 
-    Parameters:
-    - n (numpy.ndarray): The refractive indices of the layers for each frequency.
-                         Shape should be (Nfreq, Nlayers), where Nfreq is the number of
-                         frequencies and Nlayers is the number of layers.
-    - d (numpy.ndarray): The thicknesses of the layers. Shape should be (Nlayers,).
-    - f (numpy.ndarray): The frequencies at which to calculate the coefficients.
-                         Shape should be (Nfreq,).
+    :param n: The refractive indices of the layers for each frequency.
+              Shape should be (Nfreq, Nlayers), where Nfreq is the number of
+              frequencies and Nlayers is the number of layers.
+    :type n: numpy.ndarray
+    :param d: The thicknesses of the layers. Shape should be (Nlayers,).
+    :type d: numpy.ndarray
+    :param f: The frequencies at which to calculate the coefficients.
+              Shape should be (Nfreq,).
+    :type f: numpy.ndarray
 
-    Returns:
-    - R_TE (numpy.ndarray): Reflectance for TE polarization. Shape is (Nfreq,).
-    - T_TE (numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
-    - R_TM (numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
-    - T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
+    :returns: A tuple containing:
+              - R_TE (numpy.ndarray): Reflectance for TE polarization. Shape is (Nfreq,).
+              - T_TE (numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
+              - R_TM (numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
+              - T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
     """
+
     wvl = c / f  # Convert frequency to wavelength
     # Initialize arrays for both amplitude and intensity coefficients
     r_TE, r_TM, t_TE, t_TM = np.zeros_like(f, dtype=np.complex128), np.zeros_like(f, dtype=np.complex128), np.zeros_like(f, dtype=np.complex128), np.zeros_like(f, dtype=np.complex128)
