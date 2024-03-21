@@ -17,7 +17,7 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Microgrid Analysis Example" href="Microgrid_TRA.html" />
+    <link rel="prev" title="Angle Dependency Example" href="angle_example.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -37,6 +37,7 @@
             
   <section id="RF-Example">
 <h1>RF Example<a class="headerlink" href="#RF-Example" title="Link to this heading">¶</a></h1>
+<p>An example of using LayerLumos to simulate the Shielding Effectiveness(SE), demo here is a single Ag layer</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -50,24 +51,24 @@
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">8e9</span><span class="p">,</span> <span class="mf">18e9</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># Convert wavelengths to frequencies</span>
 
 <span class="c1"># Interpolate n and k values for SiO2 over the specified frequency range</span>
-<span class="n">n_k_si02</span> <span class="o">=</span> <span class="n">load_material_RF</span><span class="p">(</span><span class="s1">&#39;Ag&#39;</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
-<span class="n">n_si02</span> <span class="o">=</span> <span class="n">n_k_si02</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">n_k_si02</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># Combine n and k into a complex refractive index</span>
+<span class="n">n_k_Ag</span> <span class="o">=</span> <span class="n">load_material_RF</span><span class="p">(</span><span class="s1">&#39;Ag&#39;</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+<span class="n">n_Ag</span> <span class="o">=</span> <span class="n">n_k_Ag</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">n_k_Ag</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># Combine n and k into a complex refractive index</span>
 
 <span class="c1"># Define stack configuration</span>
-<span class="n">n_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>  <span class="c1"># Refractive index of air is approximately 1</span>
+<span class="n">n_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>  <span class="c1"># Refractive index of air</span>
 <span class="n">d_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">d_si02</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5e-8</span><span class="p">])</span>  <span class="c1"># Thickness of SiO2 layer in meters (e.g., 2 microns)</span>
+<span class="n">d_Ag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2e-8</span><span class="p">])</span>  <span class="c1"># Thickness of SiO2 layer in meters (e.g., 2 microns)</span>
 
 <span class="c1"># Stack refractive indices and thicknesses for air-SiO2-air</span>
-<span class="n">n_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">n_air</span><span class="p">,</span> <span class="n">n_si02</span><span class="p">,</span> <span class="n">n_air</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose to match expected shape (Nlayers x Nfreq)</span>
-<span class="n">d_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d_air</span><span class="p">,</span> <span class="n">d_si02</span><span class="p">,</span> <span class="n">d_air</span><span class="p">])</span>  <span class="c1"># No frequency dependence on thickness</span>
+<span class="n">n_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">n_air</span><span class="p">,</span> <span class="n">n_Ag</span><span class="p">,</span> <span class="n">n_air</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose to match expected shape (Nlayers x Nfreq)</span>
+<span class="n">d_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d_air</span><span class="p">,</span> <span class="n">d_Ag</span><span class="p">,</span> <span class="n">d_air</span><span class="p">])</span>  <span class="c1"># No frequency dependence on thickness</span>
 
 <span class="c1"># Calculate R and T over the frequency (wavelength) range</span>
 <span class="n">R_TE</span><span class="p">,</span> <span class="n">T_TE</span><span class="p">,</span> <span class="n">R_TM</span><span class="p">,</span> <span class="n">T_TM</span> <span class="o">=</span> <span class="n">stackrt0</span><span class="p">(</span><span class="n">n_stack</span><span class="p">,</span> <span class="n">d_stack</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
@@ -76,7 +77,14 @@
 <span class="n">SE_TE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">T_TE</span><span class="p">)</span>
 <span class="n">SE_TM</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">T_TM</span><span class="p">)</span>
 <span class="n">SE</span> <span class="o">=</span> <span class="p">(</span><span class="n">SE_TE</span> <span class="o">+</span> <span class="n">SE_TM</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the Sheilding Efficiency</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SE</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -86,7 +94,57 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-55.47150237872992
+47.49071678079014
+</pre></div></div>
+</div>
+<p>Now we can try multiple metal layer in the structure, considering Fabry–Pérot effect</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Interpolate n and k values for SiO2 over the specified frequency range</span>
+<span class="n">n_k_Ag</span> <span class="o">=</span> <span class="n">load_material_RF</span><span class="p">(</span><span class="s1">&#39;Ag&#39;</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+<span class="n">n_Ag</span> <span class="o">=</span> <span class="n">n_k_Ag</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">n_k_Ag</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># Combine n and k into a complex refractive index</span>
+
+<span class="n">n_k_SiO2</span> <span class="o">=</span> <span class="n">load_material_RF</span><span class="p">(</span><span class="s1">&#39;SiO2&#39;</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+<span class="n">n_SiO2</span> <span class="o">=</span> <span class="n">n_k_SiO2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">n_k_SiO2</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># Combine n and k into a complex refractive index</span>
+
+
+<span class="c1"># Define stack configuration</span>
+<span class="n">n_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>  <span class="c1"># Refractive index of air</span>
+<span class="n">d_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">d_SiO2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2e-4</span><span class="p">])</span>
+<span class="n">d_Ag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">])</span>  <span class="c1"># Thickness of SiO2 layer in meters (e.g., 2 microns)</span>
+
+<span class="c1"># Stack refractive indices and thicknesses for air-SiO2-air</span>
+<span class="n">n_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">n_air</span><span class="p">,</span> <span class="n">n_Ag</span><span class="p">,</span> <span class="n">n_SiO2</span><span class="p">,</span> <span class="n">n_Ag</span><span class="p">,</span> <span class="n">n_air</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose to match expected shape (Nlayers x Nfreq)</span>
+<span class="n">d_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d_air</span><span class="p">,</span> <span class="n">d_Ag</span><span class="p">,</span> <span class="n">d_SiO2</span><span class="p">,</span> <span class="n">d_Ag</span><span class="p">,</span> <span class="n">d_air</span><span class="p">])</span>  <span class="c1"># No frequency dependence on thickness</span>
+
+<span class="c1"># Calculate R and T over the frequency (wavelength) range</span>
+<span class="n">R_TE</span><span class="p">,</span> <span class="n">T_TE</span><span class="p">,</span> <span class="n">R_TM</span><span class="p">,</span> <span class="n">T_TM</span> <span class="o">=</span> <span class="n">stackrt0</span><span class="p">(</span><span class="n">n_stack</span><span class="p">,</span> <span class="n">d_stack</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+
+<span class="c1"># Calculate average R and T</span>
+<span class="n">SE_TE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">T_TE</span><span class="p">)</span>
+<span class="n">SE_TM</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">T_TM</span><span class="p">)</span>
+<span class="n">SE</span> <span class="o">=</span> <span class="p">(</span><span class="n">SE_TE</span> <span class="o">+</span> <span class="n">SE_TM</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the Sheilding Efficiency</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SE</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+63.574706852860174
 </pre></div></div>
 </div>
 </section>
@@ -122,7 +180,7 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="../examples.html">Examples</a><ul>
-      <li>Previous: <a href="Microgrid_TRA.html" title="previous chapter">Microgrid Analysis Example</a></li>
+      <li>Previous: <a href="angle_example.html" title="previous chapter">Angle Dependency Example</a></li>
   </ul></li>
   </ul></li>
 </ul>

@@ -11,6 +11,7 @@ Here are some interactive examples provided as Jupyter notebooks:
 .. toctree::
    :maxdepth: 2
 
-   examples/Microgrid_TRA.ipynb
+   examples/simple_example.ipynb
+   examples/angle_example.ipynb
    examples/RF_example.ipynb
 
