@@ -12,11 +12,11 @@ fallback_version = "0.1.0"
 
 [project]
 name = "layerlumos"
-version = "0.1.0"
+version = "1.0.0"
 authors = [
     {name = "Mingxuan Li", email = "mil152@pitt.edu"},
 ]
-description = "An open-source software for optical simulations."
+description = "An open-source software for TMM optical simulations."
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [

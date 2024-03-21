@@ -1,5 +1,6 @@
 # LayerLumos
 ![LayerLumos Icon](/docs/assets/icon3.jpg)
+
 ## Overview
 
 **LayerLumos** is an open-source software designed for scientists, engineers, and researchers in optics and photonics. It provides a powerful yet intuitive interface for calculating the reflection and transmission (RT) of light through multi-layer optical structures. By inputting the refractive index, thickness of each layer, and the frequency vector, users can analyze how light interacts with layered materials, including the option to adjust for incidence angles.
@@ -16,9 +17,23 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 
 ## Getting Started
 
-1. **Installation**: Instructions on how to install LayerLumos on various operating systems.
-2. **Quick Start Guide**: A brief tutorial on how to perform your first RT calculation using LayerLumos.
-3. **Examples**: Explore a collection of examples illustrating various use cases and capabilities of LayerLumos.
+### Installation
+
+LayerLumos can be easily installed via pip:
+
+```bash
+pip install LayerLumos
+```
+
+For more detailed installation instructions, please refer to our [Installation Guide](https://github.com/Mil152/LayerLumos/docs/installation.md).
+
+### Quick Start Guide
+
+To get started with your first RT calculation, check out our [Quick Start Guide](https://github.com/Mil152/LayerLumos/docs/quickstart.md).
+
+### Examples
+
+Explore a collection of examples illustrating various use cases and capabilities of LayerLumos in the [Examples Directory](https://mil152.github.io/LayerLumos/examples.html#jupyter-notebook-examples).
 
 ## License
 
@@ -27,3 +42,4 @@ LayerLumos is released under the [MIT License](https://github.com/Mil152/LayerLu
 ## Acknowledgments
 
 - Thanks to all contributors and users for your support and feedback.
+

@@ -20,6 +20,7 @@ author = 'Mingxuan Li'
 
 extensions = [
     'nbsphinx',
+    'myst_parser',
     'sphinx.ext.mathjax',  # If you have mathematical content
     'sphinx.ext.autodoc',
     # Other extensions here

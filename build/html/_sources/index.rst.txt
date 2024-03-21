@@ -11,6 +11,8 @@ LayerLumos is a lightweight, efficient TMM library designed to accelerate your o
    :maxdepth: 2
    :caption: Contents:
 
+   home
+   getting-started
    modules
    examples
 
