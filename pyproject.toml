@@ -4,9 +4,6 @@ requires = [
     "setuptools",
 ]
 
-[tool.setuptools_scm]
-fallback_version = "0.1.0"
-
 [project]
 name = "layerlumos"
 version = "1.0.1"
