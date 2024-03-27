@@ -1,20 +1,7 @@
 import numpy as np
-import scipy.constants as scic
-from .utils import load_material, interpolate_material
-import numpy as np
+from .utils_spectra import convert_frequencies_to_wavelengths
+from .utils_materials import load_material, interpolate_material
 
-
-def convert_frequency_to_wavelength(f):
-    """
-    Convert frequency to wavelength.
-
-    """
-
-    assert isinstance(f, np.ndarray)
-    assert f.ndim == 1
-
-    wvl = scic.c / f
-    return wvl
 
 def stackrt(n, d, f, theta=np.array([0])):
     """
@@ -41,7 +28,7 @@ def stackrt(n, d, f, theta=np.array([0])):
 
     """
 
-    wvl = convert_frequency_to_wavelength(f)
+    wvl = convert_frequencies_to_wavelengths(f)
     theta_radians = np.radians(theta)  # Convert incidence angle to radians
 
     # Initialize arrays for both amplitude and intensity coefficients
@@ -123,7 +110,7 @@ def stackrt0(n, d, f):
 
     """
 
-    wvl = convert_frequency_to_wavelength(f)
+    wvl = convert_frequencies_to_wavelengths(f)
     # Initialize arrays for both amplitude and intensity coefficients
     r_TE, r_TM, t_TE, t_TM = np.zeros_like(f, dtype=np.complex128), np.zeros_like(f, dtype=np.complex128), np.zeros_like(f, dtype=np.complex128), np.zeros_like(f, dtype=np.complex128)
     R_TE, T_TE, R_TM, T_TM = np.zeros_like(f), np.zeros_like(f), np.zeros_like(f), np.zeros_like(f)

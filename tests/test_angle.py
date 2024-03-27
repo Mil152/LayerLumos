@@ -1,8 +1,10 @@
 import unittest
 import numpy as np
-from scipy.constants import c
-from layerlumos.utils import load_material, interpolate_material
+import scipy.constants as scic
+
+from layerlumos.utils_materials import load_material, interpolate_material
 from layerlumos.layerlumos import stackrt
+
 
 class TestLayerLumosStackrt(unittest.TestCase):
     def test_stackrt_with_angles(self):
@@ -11,7 +13,7 @@ class TestLayerLumosStackrt(unittest.TestCase):
 
         # Define wavelength range (in meters)
         wavelengths = np.linspace(300e-9, 900e-9, 3)  # 100 points from 300nm to 700nm
-        frequencies = c / wavelengths  # Convert wavelengths to frequencies
+        frequencies = scic.c / wavelengths  # Convert wavelengths to frequencies
 
         # Interpolate n and k values for SiO2 over the specified frequency range
         n_k_TiO2 = interpolate_material(TiO2_data, frequencies)
@@ -50,6 +52,7 @@ class TestLayerLumosStackrt(unittest.TestCase):
         # Verify the results
         np.testing.assert_almost_equal(R_avg, expected_R_avg, decimal=5, err_msg="Reflectance values do not match expected results")
         np.testing.assert_almost_equal(T_avg, expected_T_avg, decimal=5, err_msg="Transmittance values do not match expected results")
+
 
 if __name__ == "__main__":
     unittest.main()

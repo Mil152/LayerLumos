@@ -1,9 +1,10 @@
+import numpy as np
 import csv
 import json
 from pathlib import Path
-import numpy as np
 from scipy.interpolate import interp1d
-import scipy.constants as scic
+
+from .utils_spectra import convert_frequencies_to_wavelengths
 
 
 Metals_sigma = {
@@ -117,7 +118,7 @@ def load_material(material_name):
                 # Attempt to convert wavelength, n, and k to floats
                 wavelength_um, n, k = map(float, row)
                 # Convert wavelength in um to frequency in Hz
-                frequency = scic.c / (wavelength_um * 1e-6)
+                frequency = convert_frequencies_to_wavelengths(wavelength_um * 1e-6)
                 data.append((frequency, n, k))
             except ValueError:
                 # If conversion fails, skip this row
