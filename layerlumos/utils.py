@@ -16,12 +16,14 @@ Metals_sigma = {
     'Ti' : 2.38e6,
     'Pd' : 9.52e6
 }
+
 Metals_nk_updated_specific_sigma = {}
 mu0 = 4 * np.pi * 1e-7  # H/m
 Z_0 = 377  # Ohms, impedance of free space
 # Frequency range
 nu = np.linspace(8e9, 18e9, 11)  # From 8 GHz to 18 GHz
 omega = 2 * np.pi * nu  # Angular frequency
+
 for metal, sigma in Metals_sigma.items():
     Z = np.sqrt(1j * omega * mu0 / sigma)  # Impedance of the material using specific sigma
     n_complex = Z_0 / Z  # Complex refractive index
@@ -36,6 +38,7 @@ for metal, sigma in Metals_sigma.items():
         'n_data': n_real.tolist(),
         'k_data': k_imag.tolist()
     }
+
 def load_material_RF(material_name, frequencies):
     """
     Load material RF data for a given material and frequencies.
