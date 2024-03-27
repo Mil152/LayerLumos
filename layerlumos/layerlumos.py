@@ -27,7 +27,6 @@ def stackrt(n, d, f, theta=np.array([0])):
               - T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
     """
 
-    c = 3e8  # Speed of light in vacuum
     wvl = c / f  # Convert frequency to wavelength
     theta_radians = np.radians(theta)  # Convert incidence angle to radians
 
