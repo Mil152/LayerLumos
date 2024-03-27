@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Simple Example &#8212; LayerLumos  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Angle Dependency Example" href="angle_example.html" />
+    <link rel="prev" title="Examples" href="../examples.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="Simple-Example">
+<h1>Simple Example<a class="headerlink" href="#Simple-Example" title="Link to this heading">¶</a></h1>
+<p>An simple example of calculating the Transmission and Reflection spectrum of a layered strcuture TiO2/Ag/TiO2 Sandwich structure that improve the Transmission of Ag layer</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">c</span>
+<span class="kn">from</span> <span class="nn">layerlumos.utils</span> <span class="kn">import</span> <span class="n">load_material</span><span class="p">,</span> <span class="n">interpolate_material</span>
+<span class="kn">from</span> <span class="nn">layerlumos.layerlumos</span> <span class="kn">import</span> <span class="n">stackrt</span><span class="p">,</span> <span class="n">stackrt0</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TiO2_data</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s1">&#39;TiO2&#39;</span><span class="p">)</span>
+<span class="n">Ag_data</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s1">&#39;Ag&#39;</span><span class="p">)</span>
+
+<span class="c1"># Define wavelength range (in meters)</span>
+<span class="n">wavelengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">300e-9</span><span class="p">,</span> <span class="mf">900e-9</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># 100 points from 300nm to 700nm</span>
+<span class="n">frequencies</span> <span class="o">=</span> <span class="n">c</span> <span class="o">/</span> <span class="n">wavelengths</span>  <span class="c1"># Convert wavelengths to frequencies</span>
+
+<span class="c1"># Interpolate n and k values for TiO2 over the specified frequency range</span>
+<span class="n">n_k_TiO2</span> <span class="o">=</span> <span class="n">interpolate_material</span><span class="p">(</span><span class="n">TiO2_data</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+<span class="n">n_TiO2</span> <span class="o">=</span> <span class="n">n_k_TiO2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">n_k_TiO2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># Combine n and k into a complex refractive index</span>
+<span class="n">n_k_Ag</span> <span class="o">=</span> <span class="n">interpolate_material</span><span class="p">(</span><span class="n">Ag_data</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+<span class="n">n_Ag</span> <span class="o">=</span> <span class="n">n_k_Ag</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">n_k_Ag</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># Combine n and k into a complex refractive index</span>
+
+<span class="c1"># Define stack configuration</span>
+<span class="n">n_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>  <span class="c1"># Refractive index of air</span>
+<span class="n">d_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">d_TiO2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2e-8</span><span class="p">])</span>
+<span class="n">d_Ag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">])</span>  <span class="c1"># Thickness of TiO2 layer in meters (e.g., 2 microns)</span>
+
+<span class="c1"># Stack refractive indices and thicknesses for air-TiO2-air</span>
+<span class="n">n_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">n_air</span><span class="p">,</span> <span class="n">n_TiO2</span><span class="p">,</span> <span class="n">n_Ag</span><span class="p">,</span> <span class="n">n_TiO2</span><span class="p">,</span> <span class="n">n_air</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose to match expected shape (Nlayers x Nfreq)</span>
+<span class="n">d_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d_air</span><span class="p">,</span> <span class="n">d_TiO2</span><span class="p">,</span> <span class="n">d_Ag</span><span class="p">,</span> <span class="n">d_TiO2</span><span class="p">,</span> <span class="n">d_air</span><span class="p">])</span>  <span class="c1"># No frequency dependence on thickness</span>
+
+<span class="c1"># Calculate R and T over the frequency (wavelength) range</span>
+<span class="n">R_TE</span><span class="p">,</span> <span class="n">T_TE</span><span class="p">,</span> <span class="n">R_TM</span><span class="p">,</span> <span class="n">T_TM</span> <span class="o">=</span> <span class="n">stackrt0</span><span class="p">(</span><span class="n">n_stack</span><span class="p">,</span> <span class="n">d_stack</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+
+<span class="c1"># Calculate average R and T</span>
+<span class="n">R_avg</span> <span class="o">=</span> <span class="p">(</span><span class="n">R_TE</span> <span class="o">+</span> <span class="n">R_TM</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">T_avg</span> <span class="o">=</span> <span class="p">(</span><span class="n">T_TE</span> <span class="o">+</span> <span class="n">T_TM</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelengths</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">R_avg</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Reflection (R)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelengths</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">T_avg</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Transmission (T)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (nm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Coefficient Value&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reflection and Transmission for Air-TiO2-Air Stack&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_simple_example_4_0.png" src="../_images/examples_simple_example_4_0.png" />
+</div>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">LayerLumos</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../home.html">Welcome to LayerLumos Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">LayerLumos Modules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#jupyter-notebook-examples">Jupyter Notebook Examples</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">Examples</a><ul>
+      <li>Previous: <a href="../examples.html" title="previous chapter">Examples</a></li>
+      <li>Next: <a href="angle_example.html" title="next chapter">Angle Dependency Example</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Mingxuan Li.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/examples/simple_example.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
