@@ -9,14 +9,13 @@ requires = [
 [tool.setuptools_scm]
 fallback_version = "0.1.0"
 
-
 [project]
 name = "layerlumos"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
     {name = "Mingxuan Li", email = "mil152@pitt.edu"},
 ]
-description = "An open-source software for TMM optical simulations."
+description = "An open-source software for TMM optical simulations"
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
@@ -33,7 +32,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mil152/layerlumos"  # Provide a valid URL or remove this line if not applicable
+Homepage = "https://github.com/mil152/layerlumos"
 Source = "https://github.com/mil152/layerlumos"
 
 [project.optional-dependencies]

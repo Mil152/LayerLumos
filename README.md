@@ -22,7 +22,7 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 LayerLumos can be easily installed via pip:
 
 ```bash
-pip install LayerLumos
+pip install layerlumos
 ```
 
 For more detailed installation instructions, please refer to our [Installation Guide](https://github.com/Mil152/LayerLumos/docs/installation.md).
@@ -42,4 +42,3 @@ LayerLumos is released under the [MIT License](https://github.com/Mil152/LayerLu
 ## Acknowledgments
 
 - Thanks to all contributors and users for your support and feedback.
-
