@@ -7,40 +7,41 @@ from layerlumos.layerlumos import stackrt
 class TestLayerLumosStackrt(unittest.TestCase):
     def test_stackrt_with_angles(self):
         # Load material data for SiO2
-        si02_data = load_material('SiO2')
+        TiO2_data = load_material('TiO2')
 
-        # Define wavelength range (in meters) and convert to frequencies
-        wavelengths = np.linspace(300e-9, 900e-9, 3)
-        frequencies = c / wavelengths
+        # Define wavelength range (in meters)
+        wavelengths = np.linspace(300e-9, 900e-9, 3)  # 100 points from 300nm to 700nm
+        frequencies = c / wavelengths  # Convert wavelengths to frequencies
 
         # Interpolate n and k values for SiO2 over the specified frequency range
-        n_k_si02 = interpolate_material(si02_data, frequencies)
-        n_si02 = n_k_si02[:, 0] + 1j * n_k_si02[:, 1]
+        n_k_TiO2 = interpolate_material(TiO2_data, frequencies)
+        n_TiO2 = n_k_TiO2[:, 0] + 1j*n_k_TiO2[:, 1]  # Combine n and k into a complex refractive index
 
         # Define stack configuration
-        n_air = np.ones_like(wavelengths)
-        d_air = np.array([0])
-        d_si02 = np.array([2e-6])
-
+        n_air = np.ones_like(wavelengths)  # Refractive index of air is approximately 1
         # Stack refractive indices and thicknesses for air-SiO2-air
-        n_stack = np.vstack([n_air, n_si02, n_air]).T
-        d_stack = np.vstack([d_air, d_si02, d_air])
-        thetas = np.linspace(10, 40, 3)
-
+        n_stack = np.vstack([n_air, n_TiO2, n_air]).T  # Transpose to match expected shape (Nlayers x Nfreq)
+        d_stack = np.array([0, 2e-8, 0])  # No frequency dependence on thickness
+        thetas = np.linspace(0, 89, 3)
         # Calculate R and T over the frequency (wavelength) range
         R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 
+        # Calculate average R and T
+        R_avg = (R_TE + R_TM) / 2
+        T_avg = (T_TE + T_TM) / 2
+
         # Expected results
-        expected_R_avg = np.array([
-            [0.14203791, 0.00191109, 0.05613855],
-            [0.12495949, 0.04856867, 0.13914601],
-            [0.10354121, 0.03205252, 0.00632787]
-        ])
-        expected_T_avg = np.array([
-            [0.85796209, 0.99808891, 0.94386145],
-            [0.87504051, 0.95143133, 0.86085399],
-            [0.89645879, 0.96794748, 0.99367213]
-        ])
+        expected_R_avg = np.array(
+            [[0.25373591, 0.34246181, 0.98213575],
+            [0.09353674, 0.16584404, 0.99560363],
+            [0.04180261, 0.08022344, 0.98953366]]
+        )
+
+        expected_T_avg = np.array(
+            [[1.09220431e-01, 7.48682245e-02, 1.02367688e-04],
+            [4.92915833e-01, 4.28325447e-01, 1.29875922e-03],
+            [5.50680340e-01, 5.15506427e-01, 3.28311546e-03]]
+        )
 
         # Calculate average R and T
         R_avg = (R_TE + R_TM) / 2
