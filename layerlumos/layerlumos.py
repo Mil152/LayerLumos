@@ -1,4 +1,5 @@
 import numpy as np
+
 from .utils_spectra import convert_frequencies_to_wavelengths
 from .utils_materials import load_material, interpolate_material
 
@@ -28,12 +29,25 @@ def stackrt(n, d, f, theta=np.array([0])):
 
     """
 
+    assert isinstance(n, np.ndarray)
+    assert isinstance(d, np.ndarray)
+    assert isinstance(f, np.ndarray)
+    assert isinstance(theta, np.ndarray)
+    assert n.ndim == 2
+    assert f.ndim == 1
+    assert d.ndim == 1
+    assert n.shape[0] == f.shape[0]
+    assert n.shape[1] == d.shape[0]
+
     wvl = convert_frequencies_to_wavelengths(f)
     theta_radians = np.radians(theta)  # Convert incidence angle to radians
 
+    num_f = f.shape[0]
+    num_theta = theta.shape[0]
+
     # Initialize arrays for both amplitude and intensity coefficients
-    r_TE, r_TM, t_TE, t_TM = (np.zeros((len(f), len(theta_radians)), dtype=np.complex128) for _ in range(4))
-    R_TE, T_TE, R_TM, T_TM = (np.zeros((len(f), len(theta_radians))) for _ in range(4))
+    r_TE, r_TM, t_TE, t_TM = (np.zeros((num_f, num_theta), dtype=np.complex128) for _ in range(4))
+    R_TE, T_TE, R_TM, T_TM = (np.zeros((num_f, num_theta)) for _ in range(4))
 
     for i, lambda_i in enumerate(wvl):
         for angle_idx, theta_i in enumerate(theta_radians):
