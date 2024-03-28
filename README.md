@@ -1,5 +1,8 @@
 # LayerLumos
-![LayerLumos Icon](/docs/assets/icon3.jpg)
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/LayerLumos/main/docs/assets/icon3.jpg" width="400" />
+</p>
 
 ## Overview
 
