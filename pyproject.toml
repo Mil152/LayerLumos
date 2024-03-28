@@ -37,4 +37,5 @@ dev = [
     "wheel",
     "build",
     "twine",
+    "sphinx",
 ]

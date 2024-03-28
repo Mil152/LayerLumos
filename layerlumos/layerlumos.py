@@ -72,7 +72,7 @@ def stackrt(n, d, f, theta=np.array([0])):
                 if np.any(np.abs(sin_theta_layers) > 1):
                     t_TE[i, angle_idx], t_TM[i, angle_idx] = 0, 0
                     R_TE[i, angle_idx], R_TM[i, angle_idx] = 1, 1
-                    continue
+#                    continue
 
                 # Interface calculations for TE and TM polarization with angle consideration
                 r_jk_TE = (n_j * cos_theta_j - n_next * cos_theta_next) / (n_j * cos_theta_j + n_next * cos_theta_next)
