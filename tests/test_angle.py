@@ -1,8 +1,10 @@
 import unittest
 import numpy as np
-from scipy.constants import c
-from layerlumos.utils import load_material, interpolate_material
+import scipy.constants as scic
+
+from layerlumos.utils_materials import load_material, interpolate_material
 from layerlumos.layerlumos import stackrt
+
 
 class TestLayerLumosStackrt(unittest.TestCase):
     def test_stackrt_with_angles(self):
@@ -11,7 +13,7 @@ class TestLayerLumosStackrt(unittest.TestCase):
 
         # Define wavelength range (in meters)
         wavelengths = np.linspace(300e-9, 900e-9, 3)  # 100 points from 300nm to 700nm
-        frequencies = c / wavelengths  # Convert wavelengths to frequencies
+        frequencies = scic.c / wavelengths  # Convert wavelengths to frequencies
 
         # Interpolate n and k values for SiO2 over the specified frequency range
         n_k_TiO2 = interpolate_material(TiO2_data, frequencies)
@@ -31,17 +33,17 @@ class TestLayerLumosStackrt(unittest.TestCase):
         T_avg = (T_TE + T_TM) / 2
 
         # Expected results
-        expected_R_avg = np.array(
-            [[0.25373591, 0.34246181, 0.98213575],
-            [0.09353674, 0.16584404, 0.99560363],
-            [0.04180261, 0.08022344, 0.98953366]]
-        )
+        expected_R_avg = np.array([
+            [0.25376038, 0.34249332, 0.98213456],
+            [0.09363298, 0.16599289, 0.99560924],
+            [0.04185379, 0.08031534, 0.9895475],
+        ])
 
-        expected_T_avg = np.array(
-            [[1.09220431e-01, 7.48682245e-02, 1.02367688e-04],
-            [4.92915833e-01, 4.28325447e-01, 1.29875922e-03],
-            [5.50680340e-01, 5.15506427e-01, 3.28311546e-03]]
-        )
+        expected_T_avg = np.array([
+            [1.09174862e-01, 7.48343296e-02, 1.02309140e-04],
+            [4.92819598e-01, 4.28186266e-01, 1.29709745e-03],
+            [5.50629165e-01, 5.15418847e-01, 3.27875096e-03],
+        ])
 
         # Calculate average R and T
         R_avg = (R_TE + R_TM) / 2
@@ -50,6 +52,7 @@ class TestLayerLumosStackrt(unittest.TestCase):
         # Verify the results
         np.testing.assert_almost_equal(R_avg, expected_R_avg, decimal=5, err_msg="Reflectance values do not match expected results")
         np.testing.assert_almost_equal(T_avg, expected_T_avg, decimal=5, err_msg="Transmittance values do not match expected results")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,7 +1,9 @@
 import pytest
 import numpy as np
-from layerlumos.utils import load_material
-from scipy.constants import c
+import scipy.constants as scic
+
+from layerlumos.utils_materials import load_material
+
 
 def test_load_material_success():
     """Test loading a material data successfully."""
@@ -35,7 +37,7 @@ def test_material_data_conversion_and_interpolation():
     expected_k = 1.536
 
     # Convert the expected wavelength to frequency for comparison
-    expected_frequency_hz = c / (expected_wavelength_um * 1e-6)
+    expected_frequency_hz = scic.c / (expected_wavelength_um * 1e-6)
 
     # Find the row in the data where the frequency matches the expected frequency
     # We use np.isclose to handle floating-point comparison
@@ -49,4 +51,3 @@ def test_material_data_conversion_and_interpolation():
     # Check that the actual n and k values match the expected values within a tolerance
     assert np.isclose(actual_n, expected_n, atol=1e-6), f"Expected n: {expected_n}, but got: {actual_n}"
     assert np.isclose(actual_k, expected_k, atol=1e-6), f"Expected k: {expected_k}, but got: {actual_k}"
-

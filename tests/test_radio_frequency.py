@@ -1,6 +1,8 @@
 import numpy as np
-from layerlumos.utils import load_material_RF
+
+from layerlumos.utils_materials import load_material_RF
 from layerlumos.layerlumos import stackrt0
+
 
 def test_stackrt0_RF():
     # Define frequency range

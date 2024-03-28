@@ -1,9 +1,10 @@
 import unittest
 import numpy as np
-from scipy.constants import c
-# Assume utils and layerlumos are modules you've created or installed that contain the necessary functions
-from layerlumos.utils import load_material, interpolate_material
+import scipy.constants as scic
+
+from layerlumos.utils_materials import load_material, interpolate_material
 from layerlumos.layerlumos import stackrt0
+
 
 class TestLayerLumos(unittest.TestCase):
     def test_stackrt0(self):
@@ -12,7 +13,7 @@ class TestLayerLumos(unittest.TestCase):
 
         # Define a small wavelength range for testing
         wavelengths = np.linspace(300e-9, 900e-9, 3)  # from 300nm to 700nm
-        frequencies = c / wavelengths  # Convert wavelengths to frequencies
+        frequencies = scic.c / wavelengths  # Convert wavelengths to frequencies
 
         # Interpolate n and k values for SiO2 over the specified frequency range
         n_k_si02 = interpolate_material(si02_data, frequencies)
@@ -40,6 +41,7 @@ class TestLayerLumos(unittest.TestCase):
         # Validate the results with a tolerance for floating-point arithmetic
         np.testing.assert_allclose(R_avg, expected_R_avg, rtol=1e-2, atol=0)
         np.testing.assert_allclose(T_avg, expected_T_avg, rtol=1e-2, atol=0)
+
 
 if __name__ == '__main__':
     unittest.main()
