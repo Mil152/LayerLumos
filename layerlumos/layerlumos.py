@@ -66,8 +66,8 @@ def stackrt_theta(n, d, f, theta=0):
             
             theta_i = theta_t  # Update theta_i for the next layer
 
-        r_TE[i], t_TE[i] = M_TE[1, 0] / M_TE[0, 0], 1 / M_TE[0, 0]
-        r_TM[i], t_TM[i] = M_TM[1, 0] / M_TM[0, 0], 1 / M_TM[0, 0]
+        r_TE[i], t_TE[i] = np.nan_to_num(M_TE[1, 0] / M_TE[0, 0]), np.nan_to_num(1 / M_TE[0, 0])
+        r_TM[i], t_TM[i] = np.nan_to_num(M_TM[1, 0] / M_TM[0, 0]), np.nan_to_num(1 / M_TM[0, 0])
         R_TE[i], T_TE[i] = np.abs(r_TE[i])**2, np.abs(t_TE[i])**2 * np.real(n[i, -1] * np.cos(theta_rad) / (n[i, 0] * cos_theta_t))
         R_TM[i], T_TM[i] = np.abs(r_TM[i])**2, np.abs(t_TM[i])**2 * np.real(n[i, -1] * np.cos(theta_rad) / (n[i, 0] * cos_theta_t))
 
@@ -176,8 +176,8 @@ def stackrt0(n, d, f):
             M_TE = np.dot(M_TE, np.dot(M_jk_TE, P))
             M_TM = np.dot(M_TM, np.dot(M_jk_TM, P))
 
-        r_TE[i], t_TE[i] = M_TE[1, 0] / M_TE[0, 0], 1 / M_TE[0, 0]
-        r_TM[i], t_TM[i] = M_TM[1, 0] / M_TM[0, 0], 1 / M_TM[0, 0]
+        r_TE[i], t_TE[i] = np.nan_to_num(M_TE[1, 0] / M_TE[0, 0]), np.nan_to_num(1 / M_TE[0, 0])
+        r_TM[i], t_TM[i] = np.nan_to_num(M_TM[1, 0] / M_TM[0, 0]), np.nan_to_num(1 / M_TM[0, 0])
         R_TE[i], T_TE[i] = np.abs(r_TE[i])**2, np.abs(t_TE[i])**2 * np.real(n[i, -1] / n[i, 0])
         R_TM[i], T_TM[i] = np.abs(r_TM[i])**2, np.abs(t_TM[i])**2 * np.real(n[i, -1] / n[i, 0])
 
