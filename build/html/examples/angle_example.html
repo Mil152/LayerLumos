@@ -17,6 +17,8 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RF Example" href="RF_example.html" />
+    <link rel="prev" title="Simple Example" href="simple_example.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -38,12 +40,12 @@
 <h1>Angle Dependency Example<a class="headerlink" href="#Angle-Dependency-Example" title="Link to this heading">¶</a></h1>
 <p>This is an example shows how to use LayerLumos to get angle dependncy of your structure</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">c</span>
-<span class="kn">from</span> <span class="nn">layerlumos.utils</span> <span class="kn">import</span> <span class="n">load_material</span><span class="p">,</span> <span class="n">interpolate_material</span>
+<span class="kn">from</span> <span class="nn">layerlumos.utils_materials</span> <span class="kn">import</span> <span class="n">load_material</span><span class="p">,</span> <span class="n">interpolate_material</span>
 <span class="kn">from</span> <span class="nn">layerlumos.layerlumos</span> <span class="kn">import</span> <span class="n">stackrt</span><span class="p">,</span> <span class="n">stackrt0</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -51,7 +53,7 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TiO2_data</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s1">&#39;TiO2&#39;</span><span class="p">)</span>
@@ -80,14 +82,14 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wavelengths_nm</span> <span class="o">=</span> <span class="n">wavelengths</span> <span class="o">*</span> <span class="mf">1e9</span>  <span class="c1"># Convert to nm for easier interpretation</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="c1"># Transmittance</span>
-<span class="n">tran</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">T_avg</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">wavelengths_nm</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">wavelengths_nm</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">thetas</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">thetas</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">tran</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">T_avg</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">wavelengths_nm</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">wavelengths_nm</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">thetas</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">thetas</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Transmittance&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (nm)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Incidence Angle (degrees)&#39;</span><span class="p">)</span>
@@ -124,11 +126,25 @@
 
 
 <h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../home.html">Welcome to LayerLumos Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">LayerLumos Modules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#jupyter-notebook-examples">Jupyter Notebook Examples</a></li>
+</ul>
+</li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">Examples</a><ul>
+      <li>Previous: <a href="simple_example.html" title="previous chapter">Simple Example</a></li>
+      <li>Next: <a href="RF_example.html" title="next chapter">RF Example</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -14,6 +14,8 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Frequently Asked Questions (FAQ)" href="getting-started.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -36,7 +38,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="layerlumos.layerlumos.stackrt">
 <span class="sig-prename descclassname"><span class="pre">layerlumos.layerlumos.</span></span><span class="sig-name descname"><span class="pre">stackrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0])</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.layerlumos.stackrt" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates the reflection and transmission coefficients for a multilayer stack
+<dd><p>Calculate the reflection and transmission coefficients for a multilayer stack
 at different frequencies and incidence angles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -63,7 +65,7 @@ Shape should be (Nfreq,).</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="layerlumos.layerlumos.stackrt0">
 <span class="sig-prename descclassname"><span class="pre">layerlumos.layerlumos.</span></span><span class="sig-name descname"><span class="pre">stackrt0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.layerlumos.stackrt0" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates the reflection and transmission coefficients for a multilayer stack
+<dd><p>Calculate the reflection and transmission coefficients for a multilayer stack
 at different frequencies under normal incidence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -86,9 +88,36 @@ Shape should be (Nfreq,).</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function" id="module-layerlumos.utils">
-<dt class="sig sig-object py" id="layerlumos.utils.interpolate_material">
-<span class="sig-prename descclassname"><span class="pre">layerlumos.utils.</span></span><span class="sig-name descname"><span class="pre">interpolate_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.utils.interpolate_material" title="Link to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="layerlumos.layerlumos.stackrt_theta">
+<span class="sig-prename descclassname"><span class="pre">layerlumos.layerlumos.</span></span><span class="sig-name descname"><span class="pre">stackrt_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.layerlumos.stackrt_theta" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the reflection and transmission coefficients for a multilayer stack
+at different frequencies under an arbitrary angle of incidence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – The refractive indices of the layers for each frequency.
+Shape should be (Nfreq, Nlayers), where Nfreq is the number of
+frequencies and Nlayers is the number of layers.</p></li>
+<li><p><strong>d</strong> – The thicknesses of the layers. Shape should be (Nlayers,).</p></li>
+<li><p><strong>f</strong> – The frequencies at which to calculate the coefficients.
+Shape should be (Nfreq,).</p></li>
+<li><p><strong>theta</strong> – The incident angle in degrees. Defaults to 0 for normal incidence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing:
+- R_TE (numpy.ndarray): Reflectance for TE polarization. Shape is (Nfreq,).
+- T_TE (numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
+- R_TM (numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
+- T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function" id="module-layerlumos.utils_materials">
+<dt class="sig sig-object py" id="layerlumos.utils_materials.interpolate_material">
+<span class="sig-prename descclassname"><span class="pre">layerlumos.utils_materials.</span></span><span class="sig-name descname"><span class="pre">interpolate_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.utils_materials.interpolate_material" title="Link to this definition">¶</a></dt>
 <dd><p>Interpolate n and k values for the specified frequencies.</p>
 <p>Parameters:
 - material_data: The data for the material, as returned by load_material.
@@ -98,8 +127,8 @@ Shape should be (Nfreq,).</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="layerlumos.utils.load_material">
-<span class="sig-prename descclassname"><span class="pre">layerlumos.utils.</span></span><span class="sig-name descname"><span class="pre">load_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.utils.load_material" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="layerlumos.utils_materials.load_material">
+<span class="sig-prename descclassname"><span class="pre">layerlumos.utils_materials.</span></span><span class="sig-name descname"><span class="pre">load_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.utils_materials.load_material" title="Link to this definition">¶</a></dt>
 <dd><p>Load material data from its CSV file, converting wavelength to frequency.</p>
 <p>Parameters:
 - material_name: The name of the material to load.</p>
@@ -108,14 +137,20 @@ Shape should be (Nfreq,).</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="layerlumos.utils.load_material_RF">
-<span class="sig-prename descclassname"><span class="pre">layerlumos.utils.</span></span><span class="sig-name descname"><span class="pre">load_material_RF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.utils.load_material_RF" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="layerlumos.utils_materials.load_material_RF">
+<span class="sig-prename descclassname"><span class="pre">layerlumos.utils_materials.</span></span><span class="sig-name descname"><span class="pre">load_material_RF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.utils_materials.load_material_RF" title="Link to this definition">¶</a></dt>
 <dd><p>Load material RF data for a given material and frequencies.</p>
 <p>Parameters:
 - material_name: The name of the material to load.
 - frequencies: Array of frequencies for which data is requested.</p>
 <p>Returns:
 - A NumPy array with columns for frequency, n, and k.</p>
+</dd></dl>
+
+<dl class="py function" id="module-layerlumos.utils_spectra">
+<dt class="sig sig-object py" id="layerlumos.utils_spectra.convert_frequencies_to_wavelengths">
+<span class="sig-prename descclassname"><span class="pre">layerlumos.utils_spectra.</span></span><span class="sig-name descname"><span class="pre">convert_frequencies_to_wavelengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#layerlumos.utils_spectra.convert_frequencies_to_wavelengths" title="Link to this definition">¶</a></dt>
+<dd><p>Convert frequency to wavelength.</p>
 </dd></dl>
 
 </section>
@@ -137,11 +172,29 @@ Shape should be (Nfreq,).</p></li>
 
 
 <h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="home.html">Welcome to LayerLumos Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">LayerLumos Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#layerlumos.layerlumos.stackrt"><code class="docutils literal notranslate"><span class="pre">stackrt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layerlumos.layerlumos.stackrt0"><code class="docutils literal notranslate"><span class="pre">stackrt0()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layerlumos.layerlumos.stackrt_theta"><code class="docutils literal notranslate"><span class="pre">stackrt_theta()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layerlumos.utils_materials.interpolate_material"><code class="docutils literal notranslate"><span class="pre">interpolate_material()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layerlumos.utils_materials.load_material"><code class="docutils literal notranslate"><span class="pre">load_material()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layerlumos.utils_materials.load_material_RF"><code class="docutils literal notranslate"><span class="pre">load_material_RF()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layerlumos.utils_spectra.convert_frequencies_to_wavelengths"><code class="docutils literal notranslate"><span class="pre">convert_frequencies_to_wavelengths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="getting-started.html" title="previous chapter">Frequently Asked Questions (FAQ)</a></li>
+      <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
   </ul></li>
 </ul>
 </div>

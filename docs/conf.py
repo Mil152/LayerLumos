@@ -22,11 +22,11 @@ extensions = [
     'nbsphinx',
     'myst_parser',
     'sphinx.ext.mathjax',  # If you have mathematical content
-    'sphinx_sitemap',
+    # 'sphinx_sitemap',
     'sphinx.ext.autodoc',
     # Other extensions here
 ]
-site_url = 'https://mil152.github.io/LayerLumos/'
+# site_url = 'https://mil152.github.io/LayerLumos/'
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
