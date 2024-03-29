@@ -1,7 +1,6 @@
 import numpy as np
 
 from .utils_spectra import convert_frequencies_to_wavelengths
-from .utils_materials import load_material, interpolate_material
 
 
 def stackrt_theta(n, d, f, theta=0):
@@ -82,7 +81,7 @@ def stackrt_theta(n, d, f, theta=0):
 
     return R_TE, T_TE, R_TM, T_TM
 
-def stackrt(n, d, f, theta= np.array([0])):
+def stackrt(n, d, f, theta=np.array([0])):
     """
     Calculate the reflection and transmission coefficients for a multilayer stack
     at different frequencies and incidence angles.

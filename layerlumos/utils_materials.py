@@ -2,7 +2,8 @@ import numpy as np
 import csv
 import json
 from pathlib import Path
-from scipy.interpolate import interp1d
+import scipy.interpolate as scii
+import scipy.constants as scic
 
 from .utils_spectra import convert_frequencies_to_wavelengths
 
@@ -20,7 +21,7 @@ Metals_sigma = {
 
 Metals_nk_updated_specific_sigma = {}
 mu0 = 4 * np.pi * 1e-7  # H/m
-Z_0 = 377  # Ohms, impedance of free space
+Z_0 = scic.physical_constants['characteristic impedance of vacuum'][0]  # Ohms, impedance of free space
 # Frequency range
 nu = np.linspace(8e9, 18e9, 11)  # From 8 GHz to 18 GHz
 omega = 2 * np.pi * nu  # Angular frequency
@@ -159,8 +160,8 @@ def interpolate_material(material_data, frequencies):
     sorted_k_values = unique_k_values[sorted_indices]
 
     # Create interpolation functions for the sorted, unique data
-    n_interp = interp1d(sorted_freqs, sorted_n_values, kind='cubic', fill_value="extrapolate")
-    k_interp = interp1d(sorted_freqs, sorted_k_values, kind='cubic', fill_value="extrapolate")
+    n_interp = scii.interp1d(sorted_freqs, sorted_n_values, kind='cubic', fill_value="extrapolate")
+    k_interp = scii.interp1d(sorted_freqs, sorted_k_values, kind='cubic', fill_value="extrapolate")
 
     # Interpolate n and k for the given frequencies
     n_interp_values = n_interp(frequencies)
