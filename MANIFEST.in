@@ -1,0 +1,2 @@
+include layerlumos/materials.json
+recursive-include layerlumos/materials *
