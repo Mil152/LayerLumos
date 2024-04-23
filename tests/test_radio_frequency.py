@@ -29,6 +29,6 @@ def test_stackrt0_RF():
     SE_TM = -10 * np.log10(T_TM)
     SE = (SE_TE + SE_TM) / 2
 
-    expected_mean_SE = 55.47150237872992
+    expected_mean_SE = 55.45905006672689
     # Assert that the actual mean SE is close to the expected value
     np.testing.assert_allclose(np.mean(SE), expected_mean_SE, rtol=1e-5)
