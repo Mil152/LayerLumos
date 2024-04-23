@@ -17,6 +17,8 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Angle Dependency Example" href="angle_example.html" />
+    <link rel="prev" title="Examples" href="../examples.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -51,7 +53,61 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TiO2_data</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s1">&#39;TiO2&#39;</span><span class="p">)</span>
+
+<span class="c1"># Define wavelength range (in meters)</span>
+<span class="n">wavelengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">300e-9</span><span class="p">,</span> <span class="mf">900e-9</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># 100 points from 300nm to 700nm</span>
+<span class="n">frequencies</span> <span class="o">=</span> <span class="n">c</span> <span class="o">/</span> <span class="n">wavelengths</span>  <span class="c1"># Convert wavelengths to frequencies</span>
+
+<span class="c1"># Interpolate n and k values for TiO2 over the specified frequency range</span>
+<span class="n">n_k_TiO2</span> <span class="o">=</span> <span class="n">interpolate_material</span><span class="p">(</span><span class="n">TiO2_data</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+<span class="n">n_TiO2</span> <span class="o">=</span> <span class="n">n_k_TiO2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">n_k_TiO2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># Combine n and k into a complex refractive index</span>
+
+<span class="c1"># Define stack configuration</span>
+<span class="n">n_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>  <span class="c1"># Refractive index of air</span>
+<span class="n">d_air</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">d_TiO2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2e-8</span><span class="p">])</span>
+
+<span class="c1"># Stack refractive indices and thicknesses for air-TiO2-air</span>
+<span class="n">n_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">n_air</span><span class="p">,</span> <span class="n">n_TiO2</span><span class="p">,</span> <span class="n">n_air</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Transpose to match expected shape (Nlayers x Nfreq)</span>
+<span class="n">d_stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d_air</span><span class="p">,</span> <span class="n">d_TiO2</span><span class="p">,</span> <span class="n">d_air</span><span class="p">])</span>  <span class="c1"># No frequency dependence on thickness</span>
+
+<span class="c1"># Calculate R and T over the frequency (wavelength) range</span>
+<span class="n">R_TE</span><span class="p">,</span> <span class="n">T_TE</span><span class="p">,</span> <span class="n">R_TM</span><span class="p">,</span> <span class="n">T_TM</span> <span class="o">=</span> <span class="n">stackrt0</span><span class="p">(</span><span class="n">n_stack</span><span class="p">,</span> <span class="n">d_stack</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">)</span>
+
+<span class="c1"># Calculate average R and T</span>
+<span class="n">T_avg</span> <span class="o">=</span> <span class="p">(</span><span class="n">T_TE</span> <span class="o">+</span> <span class="n">T_TM</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelengths</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">,</span> <span class="n">T_avg</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Transmission (T)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (nm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Coefficient Value&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reflection and Transmission for Air-TiO2-Air Stack&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_simple_example_4_0.png" src="../_images/examples_simple_example_4_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TiO2_data</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s1">&#39;TiO2&#39;</span><span class="p">)</span>
@@ -87,7 +143,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting</span>
@@ -107,7 +163,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_simple_example_4_0.png" src="../_images/examples_simple_example_4_0.png" />
+<img alt="../_images/examples_simple_example_6_0.png" src="../_images/examples_simple_example_6_0.png" />
 </div>
 </div>
 </section>
@@ -129,11 +185,25 @@
 
 
 <h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../home.html">Welcome to LayerLumos Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Frequently Asked Questions (FAQ)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">LayerLumos Modules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#jupyter-notebook-examples">Jupyter Notebook Examples</a></li>
+</ul>
+</li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">Examples</a><ul>
+      <li>Previous: <a href="../examples.html" title="previous chapter">Examples</a></li>
+      <li>Next: <a href="angle_example.html" title="next chapter">Angle Dependency Example</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

@@ -6,7 +6,12 @@ LayerLumos Modules
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: layerlumos.utils
+.. automodule:: layerlumos.utils_materials
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: layerlumos.utils_spectra
    :members:
    :undoc-members:
    :show-inheritance:
