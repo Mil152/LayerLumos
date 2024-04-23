@@ -62,7 +62,7 @@ def stackrt_theta(n, d, f, theta=0):
             M_jk_TE = np.array([[1/t_jk_TE, r_jk_TE/t_jk_TE], [r_jk_TE/t_jk_TE, 1/t_jk_TE]], dtype=np.complex128)
             M_jk_TM = np.array([[1/t_jk_TM, r_jk_TM/t_jk_TM], [r_jk_TM/t_jk_TM, 1/t_jk_TM]], dtype=np.complex128)
 
-            delta = 2 * np.pi * n_next * d_next / lambda_i
+            delta = 2 * np.pi * n_next * d_next * cos_theta_t/ lambda_i
             P = np.array([[np.exp(-1j * delta), 0], [0, np.exp(1j * delta)]], dtype=np.complex128)
             M_TE = np.dot(M_TE, np.dot(M_jk_TE, P))
             M_TM = np.dot(M_TM, np.dot(M_jk_TM, P))
